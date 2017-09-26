@@ -1,30 +1,55 @@
 package com.wuppy.peacefulpackmod.item;
 
 import com.wuppy.peacefulpackmod.PeacefulPack;
-import com.wuppy.peacefulpackmod.block.ModBlocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
+@SuppressWarnings("AssignmentToNull")
+@ObjectHolder(PeacefulPack.modid)
 public class ModItems
 {
-	public static Item peacefulMaterial;
+	public static final Item peaceful_material;
 
-	public static Item flaxSeed;
-	public static Item cookedFlesh;
-	public static Item rottenSeed;
+	public static final Item flax_seed;
+	public static final Item cooked_flesh;
+	public static final Item rotten_seed;
 
+	public static final ItemBlock ore_block;
+	public static final ItemBlock flax;
+	public static final ItemBlock slime_slab;
+	public static final ItemBlock rotten_plant;
+	public static final ItemBlock blaze_log;
+	public static final ItemBlock blaze_leaves;
+	public static final ItemBlock ghast_ore;
+	public static final ItemBlock ender_clam;
+	public static final ItemBlock blaze_sapling;
+	public static final ItemBlock remains;
+
+	//Trick IntelliJ into thinking the fields above might not be null;
+	static {
+		peaceful_material = null;
+		flax_seed = null;
+		cooked_flesh = null;
+		rotten_seed = null;
+
+		ore_block = null;
+		flax = null;
+		slime_slab = null;
+		rotten_plant = null;
+		blaze_log = null;
+		blaze_leaves = null;
+		ghast_ore = null;
+		ender_clam = null;
+		blaze_sapling = null;
+		remains = null;
+	}
+
+	/*
 	public static void init(FMLPreInitializationEvent event)
 	{
-		peacefulMaterial = new ItemPeacefulMaterial();
-		flaxSeed = new ItemPeacefulSeed(ModBlocks.flax, Blocks.grass, "flaxseed");
-		cookedFlesh = new ItemCookedFlesh(4, 5, true);
-		rottenSeed = new ItemPeacefulSeed(ModBlocks.rottenPlant, Blocks.netherrack, "rottenseed");
+
 		
 		if(event.getSide() == Side.CLIENT)
 		{
@@ -48,5 +73,5 @@ public class ModItems
 			renderItem.getItemModelMesher().register(cookedFlesh, 0, new ModelResourceLocation(PeacefulPack.modid + ":" + ((ItemCookedFlesh) cookedFlesh).getName(), "inventory"));
 			renderItem.getItemModelMesher().register(rottenSeed, 0, new ModelResourceLocation(PeacefulPack.modid + ":" + ((ItemPeacefulSeed) rottenSeed).getName(), "inventory"));
 		}
-	}
+	}*/
 }

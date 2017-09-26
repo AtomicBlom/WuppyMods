@@ -5,7 +5,7 @@ import com.wuppy.peacefulpackmod.config.Config;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -17,9 +17,9 @@ public class PeacefulEvent
 	{
 		if (PeacefulPack.outdated)
 		{
-			event.player.addChatComponentMessage(new ChatComponentText("Peacefulpack is outdated."));
-			event.player.addChatComponentMessage(new ChatComponentText("Changelog: "));
-			event.player.addChatComponentMessage(new ChatComponentText(PeacefulPack.updates));
+			event.player.sendMessage(new TextComponentString("Peacefulpack is outdated."));
+			event.player.sendMessage(new TextComponentString("Changelog: "));
+			event.player.sendMessage(new TextComponentString(PeacefulPack.updates));
 		}
 	}
 
@@ -28,9 +28,9 @@ public class PeacefulEvent
 	{
 		if (Config.changeWeb)
 		{
-			if (event.state.getBlock() == Blocks.web)
+			if (event.getState().getBlock() == Blocks.WEB)
 			{
-				event.drops.add(new ItemStack(Items.spider_eye));
+				event.getDrops().add(new ItemStack(Items.SPIDER_EYE));
 			}
 		}
 	}

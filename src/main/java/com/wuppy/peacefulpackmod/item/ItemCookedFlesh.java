@@ -11,10 +11,6 @@ public class ItemCookedFlesh extends ItemFood
 	public ItemCookedFlesh(int health, float saturation, boolean wolfFood)
 	{
 		super(health, saturation, wolfFood);
-		GameRegistry.registerItem(this, name);
-		setUnlocalizedName(PeacefulPack.modid + "_" + name);
-
-		setCreativeTab(PeacefulPack.ppMaterialTab);
 	}
 
 	public String getName()

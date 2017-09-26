@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "wuppy29_peacefulpack:blocks/blazeSapling"
+        "layer0": "wuppy29_peacefulpack:blocks/blaze_sapling"
     },
     "display": {
         "thirdperson": {

@@ -2,68 +2,80 @@ package com.wuppy.peacefulpackmod.worldgen;
 
 import com.wuppy.peacefulpackmod.block.ModBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 import java.util.Random;
 
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+
 public class WorldGenBlazeTrees extends WorldGenAbstractTree
 {
 	private final int minTreeHeight;
 	private final boolean vinesGrow;
-	private final int metaWood;
-	private final int metaLeaves;
+	private final IBlockState woodState;
+	private final IBlockState leavesState;
 	private static final String __OBFID = "CL_00000438";
 
 	public WorldGenBlazeTrees()
 	{
-		this(true, 4, 1, 0, false);
+		this(true,
+				4,
+				ModBlocks.blaze_log.getDefaultState().withProperty(LOG_AXIS, EnumAxis.Y),
+				ModBlocks.blaze_leaves.getDefaultState(),
+				false);
 	}
 
-	public WorldGenBlazeTrees(boolean p_i2028_1_, int p_i2028_2_, int p_i2028_3_, int p_i2028_4_, boolean p_i2028_5_)
+	public WorldGenBlazeTrees(boolean notify,
+	                          int minimumTreeHeight,
+	                          IBlockState metaWood,
+	                          IBlockState metaLeaves,
+	                          boolean shouldVinesGrow)
 	{
-		super(p_i2028_1_);
-		this.minTreeHeight = p_i2028_2_;
-		this.metaWood = p_i2028_3_;
-		this.metaLeaves = p_i2028_4_;
-		this.vinesGrow = p_i2028_5_;
+		super(notify);
+		minTreeHeight = minimumTreeHeight;
+		this.woodState = metaWood;
+		this.leavesState = metaLeaves;
+		vinesGrow = shouldVinesGrow;
 	}
 
 	@Override
-	public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_)
+	public boolean generate(World worldIn, Random random, BlockPos pos)
 	{
-		int i = p_180709_2_.nextInt(3) + this.minTreeHeight;
+		int i = random.nextInt(3) + minTreeHeight;
 		boolean flag = true;
 
-		if (p_180709_3_.getY() >= 1 && p_180709_3_.getY() + i + 1 <= 256)
+		if (pos.getY() >= 1 && pos.getY() + i + 1 <= 256)
 		{
 			byte b0;
 			int l;
 
-			for (int j = p_180709_3_.getY(); j <= p_180709_3_.getY() + 1 + i; ++j)
+			for (int j = pos.getY(); j <= pos.getY() + 1 + i; ++j)
 			{
 				b0 = 1;
 
-				if (j == p_180709_3_.getY())
+				if (j == pos.getY())
 				{
 					b0 = 0;
 				}
 
-				if (j >= p_180709_3_.getY() + 1 + i - 2)
+				if (j >= pos.getY() + 1 + i - 2)
 				{
 					b0 = 2;
 				}
 
-				for (int k = p_180709_3_.getX() - b0; k <= p_180709_3_.getX() + b0 && flag; ++k)
+				for (int k = pos.getX() - b0; k <= pos.getX() + b0 && flag; ++k)
 				{
-					for (l = p_180709_3_.getZ() - b0; l <= p_180709_3_.getZ() + b0 && flag; ++l)
+					for (l = pos.getZ() - b0; l <= pos.getZ() + b0 && flag; ++l)
 					{
 						if (j >= 0 && j < 256)
 						{
-							if (!this.isReplaceable(worldIn, new BlockPos(k, j, l)))
+							if (!isReplaceable(worldIn, new BlockPos(k, j, l)))
 							{
 								flag = false;
 							}
@@ -80,16 +92,17 @@ public class WorldGenBlazeTrees extends WorldGenAbstractTree
 				return false;
 			} else
 			{
-				BlockPos down = p_180709_3_.down();
-				Block block1 = worldIn.getBlockState(down).getBlock();
+				BlockPos down = pos.down();
+				final IBlockState blockUnderneath = worldIn.getBlockState(down);
+				Block block1 = blockUnderneath.getBlock();
 
 				boolean goodSoil = false;
-				if (block1 == Blocks.netherrack)
+				if (block1 == Blocks.NETHERRACK)
 					goodSoil = true;
 
-				if (goodSoil && p_180709_3_.getY() < 256 - i - 1)
+				if (goodSoil && pos.getY() < 256 - i - 1)
 				{
-					block1.onPlantGrow(worldIn, down, p_180709_3_);
+					block1.onPlantGrow(blockUnderneath, worldIn, down, pos);
 					b0 = 3;
 					byte b1 = 0;
 					int i1;
@@ -98,27 +111,33 @@ public class WorldGenBlazeTrees extends WorldGenAbstractTree
 					int l1;
 					BlockPos blockpos1;
 
-					for (l = p_180709_3_.getY() - b0 + i; l <= p_180709_3_.getY() + i; ++l)
+					for (l = pos.getY() - b0 + i; l <= pos.getY() + i; ++l)
 					{
-						i1 = l - (p_180709_3_.getY() + i);
+						i1 = l - (pos.getY() + i);
 						j1 = b1 + 1 - i1 / 2;
 
-						for (k1 = p_180709_3_.getX() - j1; k1 <= p_180709_3_.getX() + j1; ++k1)
+						for (k1 = pos.getX() - j1; k1 <= pos.getX() + j1; ++k1)
 						{
-							l1 = k1 - p_180709_3_.getX();
+							l1 = k1 - pos.getX();
 
-							for (int i2 = p_180709_3_.getZ() - j1; i2 <= p_180709_3_.getZ() + j1; ++i2)
+							for (int i2 = pos.getZ() - j1; i2 <= pos.getZ() + j1; ++i2)
 							{
-								int j2 = i2 - p_180709_3_.getZ();
+								int j2 = i2 - pos.getZ();
 
-								if (Math.abs(l1) != j1 || Math.abs(j2) != j1 || p_180709_2_.nextInt(2) != 0 && i1 != 0)
+								if (Math.abs(l1) != j1 || Math.abs(j2) != j1 || random.nextInt(2) != 0 && i1 != 0)
 								{
 									blockpos1 = new BlockPos(k1, l, i2);
-									Block block = worldIn.getBlockState(blockpos1).getBlock();
+									final IBlockState blockState = worldIn.getBlockState(blockpos1);
+									Block block = blockState.getBlock();
 
-									if (block.isAir(worldIn, blockpos1) || block.isLeaves(worldIn, blockpos1) || block.getMaterial() == Material.vine)
+									if (block.isAir(blockState, worldIn, blockpos1) || block.isLeaves(blockState, worldIn, blockpos1) || blockState.getMaterial() == Material.VINE)
 									{
-										this.func_175905_a(worldIn, blockpos1, ModBlocks.blazeLeaves, this.metaLeaves);
+										//ModBlocks.blaze_leaves
+										setBlockAndNotifyAdequately(
+												worldIn,
+												blockpos1,
+												leavesState
+										);
 									}
 								}
 							}
@@ -127,12 +146,18 @@ public class WorldGenBlazeTrees extends WorldGenAbstractTree
 
 					for (l = 0; l < i; ++l)
 					{
-						BlockPos upN = p_180709_3_.up(l);
-						Block block2 = worldIn.getBlockState(upN).getBlock();
-
-						if (block2.isAir(worldIn, upN) || block2.isLeaves(worldIn, upN) || block2.getMaterial() == Material.vine)
+						BlockPos upN = pos.up(l);
+						final IBlockState blockAboveN = worldIn.getBlockState(upN);
+						Block block2 = blockAboveN.getBlock();
+						if (block2.isAir(blockAboveN, worldIn, upN) ||
+								block2.isLeaves(blockAboveN, worldIn, upN) ||
+								blockAboveN.getMaterial() == Material.VINE)
 						{
-							this.func_175905_a(worldIn, p_180709_3_.up(l), ModBlocks.blazeLog, this.metaWood);
+							//ModBlocks.blaze_log
+							setBlockAndNotifyAdequately(
+									worldIn,
+									pos.up(l),
+									woodState);
 						}
 					}
 

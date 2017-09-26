@@ -1,18 +1,18 @@
 package com.wuppy.peacefulpackmod.item;
 
-import com.wuppy.peacefulpackmod.PeacefulPack;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemPeacefulSeed extends Item implements IPlantable
 {
@@ -26,46 +26,34 @@ public class ItemPeacefulSeed extends Item implements IPlantable
 	 */
 	private Block soilBlock;
 
-	private final String name;
-
-	public ItemPeacefulSeed(Block block, Block soil, String name)
+	public ItemPeacefulSeed(Block block, Block soil)
 	{
-		this.name = name;
-
-		GameRegistry.registerItem(this, name);
-		setUnlocalizedName(PeacefulPack.modid + "_" + name);
-
 		blockType = block;
 		soilBlock = soil;
-
-		setCreativeTab(PeacefulPack.ppMaterialTab);
-	}
-
-	public String getName()
-	{
-		return name;
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if (side != EnumFacing.UP)
+		final ItemStack heldItem = player.getHeldItem(hand);
+
+		if (facing != EnumFacing.UP)
 		{
-			return false;
+			return EnumActionResult.PASS;
 		}
-		else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack))
+		else if (!player.canPlayerEdit(pos.offset(facing), facing, heldItem))
 		{
-			return false;
+			return EnumActionResult.PASS;
 		}
 		else if (worldIn.getBlockState(pos).getBlock() == soilBlock && worldIn.isAirBlock(pos.up()))
 		{
 			worldIn.setBlockState(pos.up(), this.blockType.getDefaultState());
-			--stack.stackSize;
-			return true;
+			heldItem.shrink(1);
+			return EnumActionResult.SUCCESS;
 		}
 		else
 		{
-			return false;
+			return EnumActionResult.PASS;
 		}
 	}
 

@@ -1,7 +1,7 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "wuppy29_peacefulpack:items/cookedflesh"
+		"layer0": "wuppy29_peacefulpack:items/cooked_flesh"
 	},
 	"display": {
 		"thirdperson": {

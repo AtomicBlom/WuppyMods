@@ -4,6 +4,7 @@ import com.wuppy.peacefulpackmod.block.ModBlocks;
 import com.wuppy.peacefulpackmod.item.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,12 +20,12 @@ public class PeacefulTab extends CreativeTabs
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem()
+	public ItemStack getTabIconItem()
 	{
 		if (name.equals("pp_blocks"))
-			return Item.getItemFromBlock(ModBlocks.oreBlock);
+			return new ItemStack(ModBlocks.ore_block);
 		else if (name.equals("pp_materials"))
-			return ModItems.peacefulMaterial;
+			return new ItemStack(ModItems.peaceful_material);
 		else
 		{
 			System.out.println("Error getting CreativeTab");

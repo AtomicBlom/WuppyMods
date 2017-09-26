@@ -4,10 +4,10 @@ import com.google.common.base.Predicate;
 import com.wuppy.peacefulpackmod.block.BlockPeacefulOres;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -17,19 +17,19 @@ public class WorldGenMinableFossil extends WorldGenerator
 {
 	private final IBlockState oreBlock;
 	private final int numberOfBlocks;
-	private final Predicate field_175919_c;
+	private final Predicate<IBlockState> situation;
 	private static final String __OBFID = "CL_00000426";
 
 	public WorldGenMinableFossil(IBlockState p_i45630_1_, int p_i45630_2_)
 	{
-		this(p_i45630_1_, p_i45630_2_, BlockHelper.forBlock(Blocks.stone));
+		this(p_i45630_1_, p_i45630_2_, BlockMatcher.forBlock(Blocks.STONE));
 	}
 
-	public WorldGenMinableFossil(IBlockState state, int blockCount, Predicate situation)
+	public WorldGenMinableFossil(IBlockState state, int blockCount, Predicate<IBlockState> situation)
 	{
 		this.oreBlock = state;
 		this.numberOfBlocks = blockCount;
-		this.field_175919_c = situation;
+		this.situation = situation;
 	}
 
 	@Override
@@ -52,12 +52,12 @@ public class WorldGenMinableFossil extends WorldGenerator
 			double d9 = rand.nextDouble() * (double) this.numberOfBlocks / 16.0D;
 			double d10 = (double) (MathHelper.sin((float) Math.PI * f1) + 1.0F) * d9 + 1.0D;
 			double d11 = (double) (MathHelper.sin((float) Math.PI * f1) + 1.0F) * d9 + 1.0D;
-			int j = MathHelper.floor_double(d6 - d10 / 2.0D);
-			int k = MathHelper.floor_double(d7 - d11 / 2.0D);
-			int l = MathHelper.floor_double(d8 - d10 / 2.0D);
-			int i1 = MathHelper.floor_double(d6 + d10 / 2.0D);
-			int j1 = MathHelper.floor_double(d7 + d11 / 2.0D);
-			int k1 = MathHelper.floor_double(d8 + d10 / 2.0D);
+			int j = MathHelper.floor(d6 - d10 / 2.0D);
+			int k = MathHelper.floor(d7 - d11 / 2.0D);
+			int l = MathHelper.floor(d8 - d10 / 2.0D);
+			int i1 = MathHelper.floor(d6 + d10 / 2.0D);
+			int j1 = MathHelper.floor(d7 + d11 / 2.0D);
+			int k1 = MathHelper.floor(d8 + d10 / 2.0D);
 
 			for (int l1 = j; l1 <= i1; ++l1)
 			{
@@ -79,7 +79,8 @@ public class WorldGenMinableFossil extends WorldGenerator
 								{
 									BlockPos blockpos1 = new BlockPos(l1, i2, j2);
 
-									if (worldIn.getBlockState(blockpos1).getBlock().isReplaceableOreGen(worldIn, blockpos1, this.field_175919_c))
+									final IBlockState blockState = worldIn.getBlockState(blockpos1);
+									if (blockState.getBlock().isReplaceableOreGen(blockState, worldIn, blockpos1, this.situation))
 									{
 										worldIn.setBlockState(blockpos1, this.oreBlock.withProperty(BlockPeacefulOres.VARIANT, getRandomOreType(rand)));
 									}

@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "stage=0": { "model": "wuppy29_peacefulpack:blazeSapling" },
-        "stage=1": { "model": "wuppy29_peacefulpack:blazeSapling" }
-    }
-}

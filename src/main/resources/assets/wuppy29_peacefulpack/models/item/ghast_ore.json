@@ -1,5 +1,5 @@
 {
-	"parent": "wuppy29_peacefulpack:block/ghastore",
+	"parent": "wuppy29_peacefulpack:block/ghast_ore",
 	"display": {
 		"thirdperson": {
 			"rotation": [ 10, -45, 170 ],

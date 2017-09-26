@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "wuppy29_peacefulpack:blocks/ender_clam3",
+        "down": "wuppy29_peacefulpack:blocks/ender_clam0",
+        "up": "wuppy29_peacefulpack:blocks/ender_clam3",
+        "north": "wuppy29_peacefulpack:blocks/ender_clam1",
+        "east": "wuppy29_peacefulpack:blocks/ender_clam2",
+        "south": "wuppy29_peacefulpack:blocks/ender_clam1",
+        "west": "wuppy29_peacefulpack:blocks/ender_clam2"
+    }
+}

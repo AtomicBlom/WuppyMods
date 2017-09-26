@@ -1,5 +1,5 @@
 {
-    "parent": "wuppy29_peacefulpack:block/enderclam",
+    "parent": "wuppy29_peacefulpack:block/blaze_leaves",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

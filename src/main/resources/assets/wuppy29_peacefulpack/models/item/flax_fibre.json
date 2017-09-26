@@ -1,7 +1,7 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "wuppy29_peacefulpack:items/flaxfibre"
+		"layer0": "wuppy29_peacefulpack:items/flax_fibre"
 	},
 	"display": {
 		"thirdperson": {

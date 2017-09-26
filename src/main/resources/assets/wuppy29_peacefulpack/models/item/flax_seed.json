@@ -1,7 +1,7 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "wuppy29_peacefulpack:items/rottenseed"
+		"layer0": "wuppy29_peacefulpack:items/flax_seed"
 	},
 	"display": {
 		"thirdperson": {

@@ -1,66 +1,55 @@
 package com.wuppy.peacefulpackmod.block;
 
-import java.util.Arrays;
+import com.google.common.collect.Lists;
+import com.wuppy.peacefulpackmod.config.Config;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.EntityDropParticleFX.LavaFactory;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import com.wuppy.peacefulpackmod.PeacefulPack;
-import com.wuppy.peacefulpackmod.config.Config;
-
 public class BlockGhastOre extends Block
 {
-	private final String name = "ghastOre";
-
 	public BlockGhastOre()
 	{
-		super(Material.rock);
-		GameRegistry.registerBlock(this, name);
-		setUnlocalizedName(PeacefulPack.modid + "_" + name);
+		super(Material.ROCK);
 
-		setStepSound(soundTypeStone);
+		setSoundType(SoundType.STONE);
 		setHardness(3F);
 		setResistance(1.0F);
-
-		setCreativeTab(PeacefulPack.ppBlocksTab);
 	}
 
-	public String getName()
-	{
-		return name;
-	}
-
-	boolean brokenByPlayer = false;
-	boolean lavaAround = false;
-
-	List<Block> surroundingBlocks;
+	//TODO: WTF, why is state in Block?
+	private boolean brokenByPlayer = false;
+	private boolean lavaAround = false;
 
 	@Override
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state)
 	{
 		brokenByPlayer = true;
-		surroundingBlocks = null;
-		surroundingBlocks = Arrays.asList(world.getBlockState(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())).getBlock(), world.getBlockState(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ())).getBlock(), world.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1)).getBlock(), world.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1)).getBlock(), world.getBlockState(new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ())).getBlock(), world.getBlockState(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ())).getBlock());
+		final IBlockState[] surroundingBlocks = {
+				world.getBlockState(pos.west()),
+				world.getBlockState(pos.east()),
+				world.getBlockState(pos.south()),
+				world.getBlockState(pos.north()),
+				world.getBlockState(pos.up()),
+				world.getBlockState(pos.down())
+		};
 
-		for (Block i : surroundingBlocks)
+		for (final IBlockState blockState : surroundingBlocks)
 		{
-			if (i.getMaterial() == Material.lava)
+			if (blockState.getMaterial() == Material.LAVA)
 			{
 				lavaAround = true;
 
-				int var8 = MathHelper.getRandomIntegerInRange(world.rand, 3, 7);
+				int var8 = MathHelper.getInt(world.rand, 3, 7);
 
 				this.dropXpOnBlockBreak(world, pos, var8);
 			}
@@ -68,17 +57,16 @@ public class BlockGhastOre extends Block
 	}
 
 	@Override
+	@Deprecated
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
 	{
-		List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+		final List<ItemStack> ret = Lists.newArrayList();
 
-		Random rand = world instanceof World ? ((World) world).rand : RANDOM;
-		System.out.println(brokenByPlayer + " " + lavaAround + " " + Config.lavaForGhastOres);
+		final Random rand = world instanceof World ? ((World) world).rand : RANDOM;
 		if (brokenByPlayer)
 		{
 			if(lavaAround || !Config.lavaForGhastOres)
 			{
-				System.out.println("ghast tear");
 				int i;
 				
 				if(fortune > 0)
@@ -86,7 +74,7 @@ public class BlockGhastOre extends Block
 				else
 					i = 0;
 				
-				ret.add(new ItemStack(Items.ghast_tear, 1 + i));
+				ret.add(new ItemStack(Items.GHAST_TEAR, 1 + i));
 			}
 			else
 				ret.add(new ItemStack(this));

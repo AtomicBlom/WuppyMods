@@ -1,24 +1,24 @@
-tile.wuppy29_peacefulpack_flax.name=Flax
-tile.wuppy29_peacefulpack_rottenPlant.name=Rotten Plant
-tile.wuppy29_peacefulpack_blazeLog.name=Blaze Log
-tile.wuppy29_peacefulpack_blazeLeaves.name=Blaze Leaves
-tile.wuppy29_peacefulpack_ghastOre.name=Ghast Ore
-tile.wuppy29_peacefulpack_enderclam.name=Ender Clam
-tile.wuppy29_peacefulpack_blazeSapling.name=Blaze Sapling
-tile.wuppy29_peacefulpack_oreBlock.sulphur.name=Sulphur Ore
-tile.wuppy29_peacefulpack_oreBlock.niter.name=Niter Ore
-tile.wuppy29_peacefulpack_oreBlock.fossil.name=Fossils
-tile.wuppy29_peacefulpack_remains.name=Buried Remains
-tile.wuppy29_peacefulpack_slimeSlab.name=Goo
+tile.wuppy29_peacefulpack:flax.name=Flax
+tile.wuppy29_peacefulpack:rotten_plant.name=Rotten Plant
+tile.wuppy29_peacefulpack:blaze_log.name=Blaze Log
+tile.wuppy29_peacefulpack:blaze_leaves.name=Blaze Leaves
+tile.wuppy29_peacefulpack:ghast_ore.name=Ghast Ore
+tile.wuppy29_peacefulpack:ender_clam.name=Ender Clam
+tile.wuppy29_peacefulpack:blaze_sapling.name=Blaze Sapling
+tile.wuppy29_peacefulpack:ore_block.sulphur.name=Sulphur Ore
+tile.wuppy29_peacefulpack:ore_block.niter.name=Niter Ore
+tile.wuppy29_peacefulpack:ore_block.fossil.name=Fossils
+tile.wuppy29_peacefulpack:remains.name=Buried Remains
+tile.wuppy29_peacefulpack:slime_slab.name=Goo
 
-item.wuppy29_peacefulpack_peacefulMaterial.sulphdust.name=Sulphur Crystal
-item.wuppy29_peacefulpack_peacefulMaterial.niterdust.name=Niter Crystal
-item.wuppy29_peacefulpack_peacefulMaterial.flaxfibre.name=Flax Fibre
-item.wuppy29_peacefulpack_peacefulMaterial.cloth.name=Cloth
-item.wuppy29_peacefulpack_flaxseed.name=Flax Seed
-item.wuppy29_peacefulpack_cookedFlesh.name=Cooked Flesh
-item.wuppy29_peacefulpack_peacefulMaterial.chain.name=Chain Material
-item.wuppy29_peacefulpack_rottenseed.name=Rotten Seed
+item.wuppy29_peacefulpack:peaceful_material.sulphdust.name=Sulphur Crystal
+item.wuppy29_peacefulpack:peaceful_material.niterdust.name=Niter Crystal
+item.wuppy29_peacefulpack:peaceful_material.flax_fibre.name=Flax Fibre
+item.wuppy29_peacefulpack:peaceful_material.cloth.name=Cloth
+item.wuppy29_peacefulpack:flax_seed.name=Flax Seed
+item.wuppy29_peacefulpack:cooked_flesh.name=Cooked Flesh
+item.wuppy29_peacefulpack:peaceful_material.chain.name=Chain Material
+item.wuppy29_peacefulpack:rotten_seed.name=Rotten Seed
 
 
 itemGroup.pp_blocks=Peacefulpack Blocks

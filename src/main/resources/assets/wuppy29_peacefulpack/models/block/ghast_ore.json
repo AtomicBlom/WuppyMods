@@ -1,6 +1,6 @@
 {
 	"parent": "block/cube_all",
 	"textures": {
-		"all": "wuppy29_peacefulpack:blocks/ghastore"
+		"all": "wuppy29_peacefulpack:blocks/ghast_ore"
 	}
 }

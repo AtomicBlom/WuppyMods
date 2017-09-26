@@ -3,49 +3,47 @@ package com.wuppy.peacefulpackmod.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.wuppy.peacefulpackmod.PeacefulPack;
 
+@SuppressWarnings("AssignmentToNull")
+@ObjectHolder(PeacefulPack.modid)
 public class ModBlocks
 {
-	public static Block oreBlock;
-	public static Block flax;
-	public static Block slimeSlab;
-	public static Block rottenPlant;
-	public static Block blazeLog;
-	public static Block blazeLeaves;
-	public static Block ghastOre;
-	public static Block enderClam;
-	public static Block blazeSapling;
-	public static Block remains;
+	public static final Block ore_block;
+	public static final Block flax;
+	public static final Block slime_slab;
+	public static final Block rotten_plant;
+	public static final Block blaze_log;
+	public static final Block blaze_leaves;
+	public static final Block ghast_ore;
+	public static final Block ender_clam;
+	public static final Block blaze_sapling;
+	public static final Block remains;
 
-	public static void init(FMLPreInitializationEvent event)
-	{
-		oreBlock = new BlockPeacefulOres();
-		flax = new BlockFlax();
-		slimeSlab = new BlockSlimeSlab();
-		rottenPlant = new BlockRottenPlant();
-		blazeLog = new BlockBlazeLog();
-		blazeLeaves = new BlockBlazeLeaves();
-		ghastOre = new BlockGhastOre();
-		enderClam = new BlockEnderclam();
-		blazeSapling = new BlockBlazeSapling();
-		remains = new BlockRemains();
-
-		if (event.getSide() == Side.CLIENT)
-		{
-			BlockPeacefulOres.OreType.registerVariants();
-		}
+	static {
+		ore_block = null;
+		flax = null;
+		slime_slab = null;
+		rotten_plant = null;
+		blaze_log = null;
+		blaze_leaves = null;
+		ghast_ore = null;
+		ender_clam = null;
+		blaze_sapling = null;
+		remains = null;
 	}
 
-	public static void postInit(FMLPostInitializationEvent event)
+	/*public static void postInit(FMLPostInitializationEvent event)
 	{
 		if (event.getSide() == Side.CLIENT)
 		{
@@ -66,5 +64,5 @@ public class ModBlocks
 			renderItem.getItemModelMesher().register(Item.getItemFromBlock(blazeSapling), 0, new ModelResourceLocation(PeacefulPack.modid + ":" + ((BlockBlazeSapling) blazeSapling).getName(), "inventory"));
 			renderItem.getItemModelMesher().register(Item.getItemFromBlock(remains), 0, new ModelResourceLocation(PeacefulPack.modid + ":" + ((BlockRemains) remains).getName(), "inventory"));
 		}
-	}
+	}*/
 }

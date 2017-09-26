@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "check_decay=false,decayable=false": { "model": "wuppy29_peacefulpack:blaze_leaves" },
+        "check_decay=true,decayable=false": { "model": "wuppy29_peacefulpack:blaze_leaves" },
+        "check_decay=false,decayable=true": { "model": "wuppy29_peacefulpack:blaze_leaves" },
+        "check_decay=true,decayable=true": { "model": "wuppy29_peacefulpack:blaze_leaves" }
+    }
+}

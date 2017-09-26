@@ -36,25 +36,6 @@ public class PeacefulPack
 		if (Config.checkForUpdates)
 			UpdateChecker.checkForUpdates();
 
-		ModBlocks.init(event);
-
-		ModItems.init(event);
-
 		GameRegistry.registerWorldGenerator(new PeacefulGenerator(), 0);
-
-		GameRegistry.registerFuelHandler(new PeacefulFuel());
-	}
-
-	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		ModRecipes.init();
-	}
-
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
-		ModBlocks.postInit(event);
-		ModItems.postInit(event);
 	}
 }

@@ -1,5 +1,5 @@
 {
-    "parent": "wuppy29_peacefulpack:block/slimeSlab",
+    "parent": "wuppy29_peacefulpack:block/ender_clam",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

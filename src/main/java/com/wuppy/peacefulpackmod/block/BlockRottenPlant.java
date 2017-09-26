@@ -1,21 +1,22 @@
 package com.wuppy.peacefulpackmod.block;
 
-import com.wuppy.peacefulpackmod.PeacefulPack;
 import com.wuppy.peacefulpackmod.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
+import net.minecraftforge.common.IPlantable;
 import java.util.List;
 import java.util.Random;
 
@@ -23,27 +24,23 @@ public class BlockRottenPlant extends BlockBush implements IGrowable
 {
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 1);
 
-	private final String name = "rottenPlant";
+	private final AxisAlignedBB bounds = new AxisAlignedBB(0F, 0.0F, 0F, 1F, 0.25F, 1F);
 
 	public BlockRottenPlant()
 	{
-		GameRegistry.registerBlock(this, name);
-		setUnlocalizedName(PeacefulPack.modid + "_" + name);
-
-		setStepSound(soundTypeGrass);
-		setBlockBounds(0F, 0.0F, 0F, 1F, 0.25F, 1F);
+		setSoundType(SoundType.GROUND);
 		setHardness(0.0F);
 		disableStats();
-
-		setCreativeTab(null);
-	}
-
-	public String getName()
-	{
-		return name;
 	}
 
 	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return bounds;
+	}
+
+	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta)
 	{
 		return this.getDefaultState().withProperty(AGE, meta);
@@ -56,21 +53,14 @@ public class BlockRottenPlant extends BlockBush implements IGrowable
 	}
 
 	@Override
-	protected BlockState createBlockState()
+	protected BlockStateContainer createBlockState()
 	{
-		return new BlockState(this, AGE);
+		return new BlockStateContainer(this, AGE);
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-	{
-		return worldIn.getBlockState(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ())).getBlock() == Blocks.netherrack;
-	}
-
-	@Override
-	public boolean canPlaceBlockOn(Block ground)
-	{
-		return ground == Blocks.netherrack;
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		return world.getBlockState(pos.down()).getBlock() == Blocks.NETHERRACK;
 	}
 
 	/**
@@ -83,15 +73,15 @@ public class BlockRottenPlant extends BlockBush implements IGrowable
 
 		if (worldIn.getLightFromNeighbors(pos.up()) < 6)
 		{
-			int i = (Integer) state.getValue(AGE);
+			final int age = state.getValue(AGE);
 
-			if (i < 1)
+			if (age < 1)
 			{
-				float f = getGrowthChance(this, worldIn, pos);
+				final float growthChance = getGrowthChance(this, worldIn, pos);
 
-				if (rand.nextInt((int) (25.0F / f) + 1) == 0)
+				if (rand.nextInt((int) (25.0F / growthChance) + 1) == 0)
 				{
-					worldIn.setBlockState(pos, state.withProperty(AGE, i + 1), 2);
+					worldIn.setBlockState(pos, state.withProperty(AGE, age + 1), 2);
 				}
 			}
 		}
@@ -100,20 +90,27 @@ public class BlockRottenPlant extends BlockBush implements IGrowable
 	protected static float getGrowthChance(Block blockIn, World worldIn, BlockPos pos)
 	{
 		float f = 1.0F;
-		BlockPos blockpos1 = pos.down();
+		final BlockPos underneathPos = pos.down();
 
 		for (int i = -1; i <= 1; ++i)
 		{
 			for (int j = -1; j <= 1; ++j)
 			{
 				float f1 = 0.0F;
-				IBlockState iblockstate = worldIn.getBlockState(blockpos1.add(i, 0, j));
+				final IBlockState blockStateBeneath = worldIn.getBlockState(underneathPos.add(i, 0, j));
 
-				if (iblockstate.getBlock().canSustainPlant(worldIn, blockpos1.add(i, 0, j), net.minecraft.util.EnumFacing.UP, (net.minecraftforge.common.IPlantable) blockIn))
+				if (blockStateBeneath.getBlock()
+						.canSustainPlant(
+								blockStateBeneath,
+								worldIn,
+								underneathPos.add(i, 0, j),
+								EnumFacing.UP,
+								(IPlantable) blockIn)
+						)
 				{
 					f1 = 1.0F;
 
-					if (iblockstate.getBlock().isFertile(worldIn, blockpos1.add(i, 0, j)))
+					if (blockStateBeneath.getBlock().isFertile(worldIn, underneathPos.add(i, 0, j)))
 					{
 						f1 = 3.0F;
 					}
@@ -128,19 +125,21 @@ public class BlockRottenPlant extends BlockBush implements IGrowable
 			}
 		}
 
-		BlockPos blockpos2 = pos.north();
-		BlockPos blockpos3 = pos.south();
-		BlockPos blockpos4 = pos.west();
-		BlockPos blockpos5 = pos.east();
-		boolean flag = blockIn == worldIn.getBlockState(blockpos4).getBlock() || blockIn == worldIn.getBlockState(blockpos5).getBlock();
-		boolean flag1 = blockIn == worldIn.getBlockState(blockpos2).getBlock() || blockIn == worldIn.getBlockState(blockpos3).getBlock();
+		BlockPos northPos = pos.north();
+		BlockPos southPos = pos.south();
+		BlockPos westPos = pos.west();
+		BlockPos eastPos = pos.east();
+		boolean flag = blockIn == worldIn.getBlockState(westPos).getBlock() ||
+				blockIn == worldIn.getBlockState(eastPos).getBlock();
+		boolean flag1 = blockIn == worldIn.getBlockState(northPos).getBlock() ||
+				blockIn == worldIn.getBlockState(southPos).getBlock();
 
 		if (flag && flag1)
 		{
 			f /= 2.0F;
 		} else
 		{
-			boolean flag2 = blockIn == worldIn.getBlockState(blockpos4.north()).getBlock() || blockIn == worldIn.getBlockState(blockpos5.north()).getBlock() || blockIn == worldIn.getBlockState(blockpos5.south()).getBlock() || blockIn == worldIn.getBlockState(blockpos4.south()).getBlock();
+			boolean flag2 = blockIn == worldIn.getBlockState(westPos.north()).getBlock() || blockIn == worldIn.getBlockState(eastPos.north()).getBlock() || blockIn == worldIn.getBlockState(eastPos.south()).getBlock() || blockIn == worldIn.getBlockState(westPos.south()).getBlock();
 
 			if (flag2)
 			{
@@ -152,20 +151,21 @@ public class BlockRottenPlant extends BlockBush implements IGrowable
 	}
 
 	@Override
+	@Deprecated
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
 	{
-		List<ItemStack> ret = super.getDrops(world, pos, state, fortune);
+		final List<ItemStack> ret = super.getDrops(world, pos, state, fortune);
 
-		int age = (Integer) state.getValue(AGE);
+		int age = state.getValue(AGE);
 		Random rand = world instanceof World ? ((World) world).rand : new Random();
 
 		if (age > 0)
 		{
-			ret.add(new ItemStack(Items.rotten_flesh));
+			ret.add(new ItemStack(Items.ROTTEN_FLESH));
 		}
 		if (rand.nextInt(2) == 0)
 		{
-			ret.add(new ItemStack(ModItems.rottenSeed));
+			ret.add(new ItemStack(ModItems.rotten_seed));
 		}
 
 		return ret;
